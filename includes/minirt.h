@@ -1,0 +1,272 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minirt.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: caburges <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/16 14:10:19 by caburges          #+#    #+#             */
+/*   Updated: 2025/05/16 14:10:20 by caburges         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef MINIRT_H
+# define MINIRT_H
+
+# include <fcntl.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include "minilibx-linux/mlx.h"
+# include "libft/libft.h"
+# include <math.h>
+# include <limits.h>
+# include <X11/X.h>
+# include <X11/keysym.h>
+
+# define W_WIDTH 800
+# define W_HEIGHT 600
+
+# define  WHITESPACE " \t\v\f\r"
+
+# define LEFT_ARROW  65363
+# define RIGHT_ARROW 65361
+# define UP_ARROW 65362
+# define DOWN_ARROW 65364
+# define ADD 65451
+# define SUBTRACT 65453
+# define SUBTRACT_H 65432
+# define ADD_H 65434
+
+# define X 0
+# define Y 1
+# define Z 2
+
+# define EPSILON 0.000001
+
+# define SPHERE 0
+# define CYLINDER 1
+# define PLANE 2
+
+typedef enum e_menu
+{
+	MODE_SPHERE = SPHERE,
+	MODE_CYLINDER = CYLINDER,
+	MODE_PLANE = PLANE,
+	MODE_VIEW,
+	MODE_LIGHT
+}	t_menu;
+
+typedef struct s_tuple
+{
+	double		x;
+	double		y;
+	double		z;
+	double		w;
+}	t_tuple;
+
+typedef struct s_color
+{
+	double		r;
+	double		g;
+	double		b;
+}			t_color;
+
+typedef struct s_ambient
+{
+	double		ratio;
+	t_color		color;
+}			t_ambient;
+
+typedef struct s_local
+{
+	t_tuple		up;
+	t_tuple		right;
+	t_tuple		forward;
+}	t_local;
+
+typedef struct s_cam
+{
+	t_tuple		position;
+	t_tuple		orientation;
+	int			fov;
+	double		aspect_ratio;
+	double		fov_scale;
+	t_local		basis;
+}				t_cam;
+
+typedef struct s_light
+{
+	t_tuple		position;
+	double		ratio;
+	t_color		color;
+	double		coeff;
+	double		shine;
+}				t_light;
+
+typedef struct s_quadratic
+{
+	double		a;
+	double		b;
+	double		c;
+	double		discriminant;
+	double		root_discriminant;
+	double		two_a;
+	double		t[2];
+}	t_quadratic;
+
+typedef struct s_mlx
+{
+	void		*win_ptr;
+	void		*mlx_ptr;
+	void		*img;
+	char		*addr;
+	int			bpp;
+	int			l_l;
+	int			end;
+}	t_mlx;
+
+typedef struct s_ray
+{
+	t_tuple		origin;
+	t_tuple		direction;
+}	t_ray;
+
+typedef struct s_object
+{
+	int			type;
+	t_tuple		position;
+	t_tuple		orientation;
+	t_tuple		normal;
+	double		radius;
+	double		radius_squared;
+	double		height;
+	double		half_height;
+	t_color		color;
+	t_local		basis;
+}	t_object;
+
+typedef struct s_scene
+{
+	int			obj_count;
+	t_object	*objects;
+	t_list		*lines;
+	t_ambient	ambient;
+	t_cam		camera;
+	t_light		light;
+	t_menu		mode;
+	t_mlx		mlx_data;
+	void		*win_ptr;
+	void		*mlx_ptr;
+	void		*img;
+	char		*addr;
+	int			bpp;
+	int			l_l;
+	int			end;
+}				t_scene;
+
+typedef struct s_intersection
+{
+	double		hit_distance;
+	t_tuple		point;
+	t_object	*object;
+	t_tuple		world_normal;
+	t_tuple		world_position;
+	t_tuple		local_position;
+	t_tuple		local_normal;
+}	t_xs;
+
+//---FUNCTIONS UTILS---//
+
+void			free_split(char **s);
+double			ft_atof(char *s);
+int				is_valid_int(char *s);
+int				is_valid_double(char *s);
+void			print_list(t_list *lines);
+int				is_valid_orientation_range(t_tuple orientation);
+int				shut_down(t_scene *scene, int status);
+int				count_line_tab(char **s);
+int				check_overflow(t_tuple *tuple);
+void			error(char *msg);
+
+//--DRAW--//
+
+void			my_mlx_pixel_put(t_scene *map, int x, int y, int colour);
+int				render_image(t_scene *scene);
+int				rgb_to_int(t_color colour, double light_scalar);
+int				get_pixel_color(t_scene *scene, t_ray ray, t_object *objects);
+
+//---PARSING TYPE---//
+
+int				parse_element_line(char *line, t_scene *scene, int *sp_count);
+int				check_extension(char *file);
+void			prep_initial_comps(t_cam *cam, t_object *sps, int obj_count);
+int				parse_scene(char *file, t_scene *scene);
+int				parse_element_line(char *line, t_scene *scene, int *sp_count);
+int				check_sphere(char *line, t_object *sphere, int *object_index);
+int				check_plane(char *line, t_object *plane, int *object_index);
+int				check_cylinder(char *line, t_object *cy, int *object_index);
+int				update_color(t_color *color, char *line);
+int				update_tuple(t_tuple *tuple, char *line, double w);
+
+//--INIT MLX--//
+
+void			initialise_mlx(t_scene *scene);
+
+//--INTERSECTIONS--//
+
+t_xs			intersect(t_object *shape, t_ray ray);
+t_xs			intersect_cylinder(t_object *cylinder, t_ray ray);
+int				solve_cylinder_quadratic(t_quadratic *q, t_ray r, t_object *cy);
+void			prep_sphere_quadratic(t_quadratic *q, t_ray r, t_object *cy);
+t_xs			intersect_sphere(t_object *shape, t_ray ray);
+t_xs			intersection_plane(t_ray ray, t_object *plane);
+t_xs			get_closest_intersection(t_scene *s, t_ray r, t_object *objs);
+void			apply_lighting(t_scene *scene, t_xs *hit, int *final_color);
+int				is_in_shadow(t_scene *scene, t_object *object, t_xs *hit);
+double			specular(t_tuple hit, t_tuple norm, t_tuple l_dir, t_scene *s);
+void			prep_quadratic(t_quadratic *quadratic, t_ray r, t_object *obj);
+
+//--MATHS_UTILS--//
+
+int				is_equal(double a, double b);
+double			radians(double degrees);
+float			get_discriminant(double a, double b, double c);
+t_tuple			transform_normal(t_tuple local_normal, t_local basis);
+void			recomp_basis(t_object *cy, int keysym);
+
+//-- TUPLE --//
+
+t_tuple			tuple(double x, double y, double z, double w);
+t_tuple			point(double x, double y, double z);
+t_tuple			vector(double x, double y, double z);
+int				tuple_is_equal(t_tuple a, t_tuple b);
+t_tuple			add(t_tuple a, t_tuple b);
+t_tuple			subtract(t_tuple a, t_tuple b);
+t_tuple			negate(t_tuple a);
+t_tuple			scale(t_tuple a, double scale);
+double			magnitude(t_tuple a);
+t_tuple			normalize(t_tuple a);
+double			dot(t_tuple a, t_tuple b);
+t_tuple			cross(t_tuple a, t_tuple b);
+double			distance(t_tuple a, t_tuple b);
+t_tuple			rotate(t_tuple a, int axe, double angle);
+
+//-- RAY --//
+
+t_ray			new_ray(t_tuple origin, t_tuple direction);
+t_tuple			position(t_ray ray, double distance);
+t_ray			rotate_ray_to_local_space(t_ray ray, t_object *shape);
+t_tuple			get_cam_offset(t_cam *cam, t_local basis, double x, double y);
+void			setup_cam(t_cam *cam);
+
+// --KEYBOARD--//
+
+void			translation(t_tuple *position, int keysym);
+void			rotation(t_tuple *orientation, int keysym);
+void			scaling_radius(double *radius, int keysym);
+void			scaling_height(double *height, int keysym);
+void			prep_initial_cylinder_computations(t_object *cylinder);
+void			prep_initial_sphere_computations(t_object *sphere);
+
+#endif
