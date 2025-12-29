@@ -31,20 +31,11 @@ The challenge is to implement ray-object intersection algorithms, handle light s
 
 ![Temple Scene](./temple.png)
 
-_Stone temple lit by warm ambient and point lights._
-
 ![Snowman Scene](./snowman.png)
-
-_Snowman with multiple spheres and soft shadows._
 
 ![Room Walls](./room_walls.png)
 
-_Interior walls illustrating planes, lighting, and shadow falloff._
-
 ![Sphere Shadow](./sphere_shadow.png)
-
-_Sphere casting a defined shadow to validate intersection and shading._
-
 
 ## Instructions
 
@@ -161,10 +152,12 @@ The project includes several example scenes in the `scene/` directory:
 
 ### Controls
 
-- `ESC` - Exit the program
-- `Arrow Keys` - Navigate/rotate camera (if implemented)
-- `W/A/S/D` - Move camera (if implemented)
-- `X` (close button) - Exit the program
+- **Mode selection**: `v` view/camera, `l` light, `s` spheres, `c` cylinders, `p` planes (choose what the transforms affect)
+- **Translate (mode target)**: `z` back, `x` forward, `g` right, `d` left, `r` up, `f` down
+- **Rotate (camera or oriented objects)**: arrow keys (left/right around Y, up/down around X)
+- **Scale radius (sphere/cylinder)**: numpad `+` to grow, numpad `-` to shrink
+- **Scale height (cylinder only)**: numpad `PageUp` to lengthen, numpad `PageDown` to shorten
+- **Exit**: `ESC` or window close button
 
 ### Available Make Rules
 
@@ -279,21 +272,6 @@ t = (plane_point - ray_origin) · plane_normal / (ray_direction · plane_normal)
 
 **Cylinder**: Combination of quadratic equation (body) and plane intersection (caps)
 
-### Lighting Model
-
-The project implements the **Phong reflection model**:
-
-- **Ambient**: `I_ambient = k_a * I_a`
-- **Diffuse**: `I_diffuse = k_d * (L · N) * I_light`
-- **Specular**: `I_specular = k_s * (R · V)^n * I_light`
-
-Where:
-- L = light direction
-- N = surface normal
-- R = reflection vector
-- V = view direction
-- n = shininess coefficient
-
 ### Shadow Computation
 
 For each light source, a shadow ray is cast from the intersection point toward the light. If any object intersects this ray, the point is in shadow and only ambient lighting is applied.
@@ -305,12 +283,3 @@ Colors are represented as RGB tuples with values from 0-255. Color operations in
 - Scalar multiplication for intensity
 - Component-wise multiplication for color filtering
 - Clamping to ensure values stay within valid range
-
-### Memory Management
-
-The project includes comprehensive memory management:
-- Proper allocation and deallocation of scene objects
-- Cleanup of MiniLibX resources on exit
-- Error handling with appropriate cleanup
-- No memory leaks (verified with valgrind)
-
