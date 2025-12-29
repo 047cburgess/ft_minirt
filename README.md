@@ -29,23 +29,22 @@ The challenge is to implement ray-object intersection algorithms, handle light s
 
 ### Scene Renders
 
-*Add your rendered images here to showcase different scenes*
+![Temple Scene](./temple.png)
 
-<!-- Example:
-![Temple Scene](docs/images/temple.png)
-![Snowman Scene](docs/images/snowman.png)
-![Cylinder Rainbow](docs/images/cylinder_rainbow.png)
--->
+_Stone temple lit by warm ambient and point lights._
 
-### Video Demonstrations
+![Snowman Scene](./snowman.png)
 
-**MiniRT Ray Tracer Demo**
+_Snowman with multiple spheres and soft shadows._
 
-[🎥 Watch the Demo Video](./Screencast%20from%2012-29-2025%2008:49:40%20PM.webm)
+![Room Walls](./room_walls.png)
 
-*Click the link above to watch the ray tracer render different scenes with various objects, lighting, and shadows*
+_Interior walls illustrating planes, lighting, and shadow falloff._
 
-> **Note**: You can also view or download the video directly from the repository: `Screencast from 12-29-2025 08:49:40 PM.webm`
+![Sphere Shadow](./sphere_shadow.png)
+
+_Sphere casting a defined shadow to validate intersection and shading._
+
 
 ## Instructions
 
