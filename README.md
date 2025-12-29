@@ -21,7 +21,6 @@ The challenge is to implement ray-object intersection algorithms, handle light s
 - Real-time rendering with MiniLibX
 - Camera field of view control
 - RGB color support for objects and lights
-- Anti-aliasing capabilities
 - Keyboard controls for interactive navigation
 - Fully compliant with 42's norminette coding standards
 
