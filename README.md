@@ -41,9 +41,11 @@ The challenge is to implement ray-object intersection algorithms, handle light s
 
 **MiniRT Ray Tracer Demo**
 
-https://github.com/user-attachments/assets/screencast-demo.webm
+[🎥 Watch the Demo Video](./Screencast%20from%2012-29-2025%2008:49:40%20PM.webm)
 
-*Watch the ray tracer render different scenes with various objects, lighting, and shadows*
+*Click the link above to watch the ray tracer render different scenes with various objects, lighting, and shadows*
+
+> **Note**: You can also view or download the video directly from the repository: `Screencast from 12-29-2025 08:49:40 PM.webm`
 
 ## Instructions
 
