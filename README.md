@@ -49,7 +49,7 @@ The challenge is to implement ray-object intersection algorithms, handle light s
 Clone the repository:
 
 ```bash
-git clone https://github.com/caburges/minirt.git
+git clone https://github.com/caburges/ft_minirt.git
 cd minirt
 ```
 
