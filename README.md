@@ -1,4 +1,4 @@
-# MiniRT: Mini Ray Tracer
+# MiniRT: Mini Ray Tracer in C
 
 This project has been created as part of the 42 curriculum by **caburges** and **alsuchon**.
 
