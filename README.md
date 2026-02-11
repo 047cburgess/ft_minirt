@@ -1,4 +1,4 @@
-# MiniRT
+# MiniRT: Mini Ray Tracer
 
 This project has been created as part of the 42 curriculum by **caburges** and **alsuchon**.
 
@@ -40,13 +40,9 @@ The challenge is to implement ray-object intersection algorithms, handle light s
 
 ### Prerequisites
 
-- C compiler (cc/gcc)
+- C compiler (cc)
 - Make
-- A Unix-based operating system (Linux or macOS)
-- MiniLibX library
-- X11 development libraries (Linux)
-  - `sudo apt-get install libx11-dev libxext-dev` (Debian/Ubuntu)
-- Math library (libm)
+- Linux operating system
 
 ### Installation
 
@@ -165,70 +161,6 @@ The project includes several example scenes in the `scene/` directory:
 - `make fclean` - Removes object files and executables
 - `make re` - Recompiles the entire project
 - `make norm` - Checks norminette compliance (if implemented)
-
-## Project Structure
-
-### Core Files
-
-- [main.c](srcs/main.c) - Entry point and main rendering loop
-- [Makefile](Makefile) - Build configuration
-- [minirt.h](includes/minirt.h) - Main header file with structures and prototypes
-
-### Parsing
-
-Scene file parsing and validation:
-- [parsing_file.c](srcs/parsing_file.c) - Scene file reading and parsing
-- [parsing_types.c](srcs/parsing_types.c) - Object type parsing
-- [check_objs.c](srcs/check_objs.c) - Object validation
-- [check_cylinder.c](srcs/check_cylinder.c) - Cylinder-specific validation
-
-### Rendering & Graphics
-
-Window management and rendering:
-- [init_mlx.c](srcs/init_mlx.c) - MiniLibX initialization
-- [draw.c](srcs/draw.c) - Main drawing and rendering functions
-- [camera.c](srcs/camera.c) - Camera setup and ray generation
-
-### Ray Tracing
-
-Core ray tracing algorithms:
-- [ray.c](srcs/ray.c) - Ray creation and manipulation
-- [intersections.c](srcs/intersections.c) - Ray-object intersection calculations
-- [prepare_initial_computations.c](srcs/prepare_initial_computations.c) - Intersection computation preparation
-
-### Geometric Objects
-
-Object-specific implementations:
-- [sphere.c](srcs/sphere.c) - Sphere intersection and normal calculation
-- [plane.c](srcs/plane.c) - Plane intersection and normal calculation
-- [cylinder.c](srcs/cylinder.c) - Cylinder intersection and normal calculation
-
-### Lighting & Shading
-
-Light and color calculations:
-- [light.c](srcs/light.c) - Lighting calculations (diffuse, specular)
-- [shadow.c](srcs/shadow.c) - Shadow ray casting and computation
-- [colour_maths.c](srcs/colour_maths.c) - Color operations and blending
-
-### Mathematics
-
-Vector and matrix operations:
-- [maths_utils.c](srcs/maths_utils.c) - General mathematical utilities
-- [tuple_utils.c](srcs/tuple_utils.c) - Vector/point operations
-- [tuple_utils2.c](srcs/tuple_utils2.c) - Additional vector operations
-- [tuple_utils3.c](srcs/tuple_utils3.c) - Extended vector utilities
-
-### User Interaction
-
-Event handling:
-- [keyboard.c](srcs/keyboard.c) - Keyboard input handling
-- [actions.c](srcs/actions.c) - User action processing
-
-### Utilities
-
-Helper functions:
-- [utils.c](srcs/utils.c) - General utility functions
-- [utils2.c](srcs/utils2.c) - Additional utilities
 
 ## Technical Details
 
